@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "strict": true,
+        "lib": [
+            "ESNext"
+        ]
+    },
+    "files": [
+        "index.ts"
+    ]
+}
