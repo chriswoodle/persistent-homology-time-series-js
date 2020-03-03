@@ -133,11 +133,10 @@ class PersistentHomology {
                         if (right >= value) {
                             const complex = new SimplicialComplex(indexes);
                             this.complexes.push(complex);
+                            this.history.push({ type: 'Birth', threshold });
                             return;
                         } else {
                             const complex = this.getComplexContainingPoint(rightIndex);
-                            if (!complex)
-                                throw new Error('Could not find complex at beginning of signal!');
                             complex.addPoints(indexes);
                             return;
                         }
@@ -151,8 +150,6 @@ class PersistentHomology {
                             return;
                         } else {
                             const complex = this.getComplexContainingPoint(leftIndex);
-                            if (!complex)
-                                throw new Error('Could not find complex at end of signal!');
                             complex.addPoints(indexes);
                             return;
                         }
