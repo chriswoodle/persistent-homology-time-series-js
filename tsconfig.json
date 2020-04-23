@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "declaration": true,
+        "declarationMap": true,
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
@@ -9,9 +11,9 @@
         "target": "ES5",
         "lib": [
             "ESNext"
-        ]
+        ],
+        "sourceRoot": "src",
+        "outDir": "dist"
     },
-    "files": [
-        "index.ts"
-    ]
+    "exclude": ["test"]
 }

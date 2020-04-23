@@ -2,19 +2,16 @@
   "name": "ph",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -b -v",
+    "test": "ts-node ./test/test.ts"
   },
-  "author": "",
+  "author": "Chris Woodle",
   "license": "ISC",
-  "dependencies": {
-    "@types/node": "^13.7.6",
-    "matplotnode": "^0.4.2",
-    "nodeplotlib": "^0.6.5"
-  },
   "devDependencies": {
+    "@types/node": "^13.7.6",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.2"
   }
