@@ -12,8 +12,11 @@
         "lib": [
             "ESNext"
         ],
-        "sourceRoot": "src",
+        "rootDir": "src",
         "outDir": "dist"
     },
-    "exclude": ["test"]
+    "exclude": [
+        "dist",
+        "test"
+    ]
 }

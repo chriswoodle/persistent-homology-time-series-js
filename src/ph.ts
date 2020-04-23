@@ -1,8 +1,12 @@
+import * as debug from 'debug';
+
+const log = debug('ph:');
+
 class SimplicialComplex {
     private points: number[] = [];
     private thresholdAtDeath?: number;
     constructor(private thresholdAtBirth: number, indexes: number[]) {
-        console.log('New complex')
+        log('New complex')
         indexes.forEach(index => {
             this.points.push(index);
         });
@@ -132,13 +136,13 @@ export class PersistentHomology {
                 }, [] as ArrayItem[][]);
 
             if (ranges.length > 0) {
-                console.log('---------------------------------------------------');
-                console.log('ranges', ranges);
-                console.log('threshold', threshold);
-                console.log('complexes', this.complexes);
+                log('---------------------------------------------------');
+                log('ranges', ranges);
+                log('threshold', threshold);
+                log('complexes', this.complexes);
 
                 ranges.forEach((range) => {
-                    console.log('range', range);
+                    log('range', range);
                     const leftIndex = range[0].index - 1;
                     const rightIndex = range[range.length - 1].index + 1;
                     const left = this.signal[leftIndex];
@@ -210,14 +214,14 @@ export class PersistentHomology {
         }
 
         // Entire signal has died
-        console.log('Complete');
+        log('Complete');
         this.complexes.find(complex => !complex.isDead)!.dispose(threshold);
         this.history.push({ type: 'Death', threshold: this.max });
 
-        console.log(this.complexes);
-        console.log(this.history);
+        log(this.complexes);
+        log(this.history);
         const hrend = process.hrtime(hrstart);
-        console.info('Execution time: %ds %dms', hrend[0], hrend[1] / 1000000)
+        log('Execution time: %ds %dms', hrend[0], hrend[1] / 1000000)
     }
     public get persistence() {
         return this.complexes.map(c => c.persistence);
