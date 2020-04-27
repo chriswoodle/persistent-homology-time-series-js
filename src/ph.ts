@@ -42,8 +42,9 @@ class SimplicialComplex {
     }
 
     public get persistence() {
-        if (!this.thresholdAtDeath)
-            throw new Error('Complex has not died yet!');
+        if (!this.thresholdAtDeath) {
+            throw new Error(`Complex has not died yet! ${this.thresholdAtDeath} \n${JSON.stringify(this, null, '\t')}`);
+        }
         return [this.thresholdAtBirth, this.thresholdAtDeath];
     }
 }
@@ -82,8 +83,12 @@ export class PersistentHomology {
             .find(complex => {
                 return complex.check(p);
             });
-        if (!complex)
+        if (!complex) {
+            log('Could not find complex!');
+            log('point', p, this.signal[p]);
+            log('complexes', this.complexes);
             throw new Error('Could not find complex!');
+        }
         return complex;
     }
 
@@ -103,16 +108,19 @@ export class PersistentHomology {
         const hrstart = process.hrtime()
         // Loop increasing threshold 
         // Start from lowest value point, end when past highest value point
+        log(`---------------- Starting new execute ----------------`);
+        log('signal', this.signal)
         let threshold: number;
         for (threshold = this.min; threshold < this.max + this.resolution; threshold += this.resolution) {
+            log(threshold);
             const ranges: ArrayItem[][] = this.signal
                 .map((value, index) => {
                     // Convert array to array of objects
                     return { value, index } as ArrayItem;
                 })
                 .filter((element) => {
-                    // Filter out all values not in the currentm threshold slice
-                    return element.value <= threshold && element.value > threshold - this.resolution
+                    // Filter out all values not in the current threshold slice
+                    return element.value >= threshold && element.value < threshold + this.resolution
                 })
                 .reduce((accumulator, value) => {
                     // Group sequential ranges
@@ -149,6 +157,7 @@ export class PersistentHomology {
                     const right = this.signal[rightIndex];
                     const value = range[0].value; // Select first value of range, other values do not matter
                     const indexes = range.map(element => element.index);
+                    log(left, value, right);
                     if (left === undefined) {
                         // Beginning of signal
                         if (right >= value) {
@@ -215,8 +224,11 @@ export class PersistentHomology {
 
         // Entire signal has died
         log('Complete');
-        this.complexes.find(complex => !complex.isDead)!.dispose(threshold);
-        this.history.push({ type: 'Death', threshold: this.max });
+        const undead = this.complexes.find(complex => !complex.isDead);
+        if (undead) {
+            undead.dispose(threshold);
+            this.history.push({ type: 'Death', threshold: this.max });
+        }
 
         log(this.complexes);
         log(this.history);
