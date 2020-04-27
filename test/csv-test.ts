@@ -104,6 +104,25 @@ function processData() {
             process.exit(1);
         }
     }
+
+    // Search for closest matches
+    for (let i = 0; i < Object.keys(preparedData).length; i++) {
+        const sourceCountry = Object.keys(preparedData)[i];
+        let smallest = Infinity;
+        let mostSimilarCountry = null;
+        for (let j = 0; j < Object.keys(preparedData).length; j++) {
+            const targetCountry = Object.keys(preparedData)[j];
+            if (targetCountry === sourceCountry) continue;
+            const distance = outputData[sourceCountry][targetCountry]?.derivativePh.totalDistance || outputData[targetCountry][sourceCountry]?.derivativePh.totalDistance;
+            if (distance !== undefined && distance < smallest) {
+                smallest = distance;
+                mostSimilarCountry = targetCountry;
+            }
+        }
+        outputData._comparison = outputData._comparison || {};
+        outputData._comparison[sourceCountry] = mostSimilarCountry;
+    }
+
     const hrend = process.hrtime(hrstart);
     console.info('Execution time: %ds %dms', hrend[0], hrend[1] / 1000000)
     fs.writeFileSync('output.json', JSON.stringify(outputData, null, "\t"));
