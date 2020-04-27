@@ -31,10 +31,19 @@ After following the setup instructions, run teh following commands:
 ```
 yarn test
 ```
+This test runs a small example signal that can be traced by hand.
+
 
 ```
 yarn csv-test ./test/owid-covid-data.csv 1
 ```
+
+This script loads a csv file COVID-19 by country by day. It then computes the persistence of each total-cases data set, and the persistence of the first derivitive of each dataset. It then compares the distance between the persistence of each country and searches for the most similar country (first derivitive with smalles total distance).
+
+
+The output.json file contais 2 main sections. Each Country is a Key in the map, which contains the preprocessed signal `_processedData`, its derivitive signal `_processedDerivativeData`, the persistence of both signals `_ph` and `_phDerivative`, and a map of the distance between each other country.
+The 2nd sction `_comparison` is the most similar country. 
+
 
 > Sample data taken from: https://github.com/owid/covid-19-data/tree/master/public/data
 
